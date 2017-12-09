@@ -12,7 +12,7 @@ Python plugin that pings and shows response times for network devices
 
 ## Installation
 
-Python version 3.4 or higher required & Domoticz version 3.7xxx or greater.
+Python version 3.4 or higher required & Domoticz version 3.8xxx or greater.
 
 To install:
 * Go in your Domoticz directory, open the plugins directory and create a new one named 'Pinger' or similar.
