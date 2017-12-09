@@ -35,4 +35,4 @@ In the web UI, navigate to the Hardware page.  In the hardware dropdown there wi
 
 | Version | Information|
 | ----- | ---------- |
-| 2.0.7 | Initial upload version |
+| 3.0.0 | Initial upload version |
