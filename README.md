@@ -15,12 +15,19 @@ Python plugin that pings and shows response times for network devices
 Python version 3.4 or higher required & Domoticz version 3.8xxx or greater.
 
 To install:
-* Go in your Domoticz directory, open the plugins directory and create a new one named 'Pinger' or similar.
+* Go in your Domoticz directory, open the plugins directory
 * Navigate to the directory using a command line
-* Run: ```git pull https://github.com/dnpwwo/Domoticz-Pinger-Plugin.git```
+* Run: ```git clone https://github.com/dnpwwo/Domoticz-Pinger-Plugin.git```
 * Restart Domoticz.
 
 In the web UI, navigate to the Hardware page.  In the hardware dropdown there will be an entry called "Pinger (ICMP)".
+
+## Updating
+
+To update:
+* Go in your Domoticz directory using a command line and open the plugins directory then the Domoticz-Pinger-Plugin directory.
+* Run: ```git pull```
+* Restart Domoticz.
 
 ## Configuration
 
