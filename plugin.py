@@ -1,9 +1,9 @@
 #           ICMP Plugin
 #
-#           Author:     Dnpwwo, 2017
+#           Author:     Dnpwwo, 2017 - 2018
 #
 """
-<plugin key="ICMP" name="Pinger (ICMP)" author="dnpwwo" version="3.0.0">
+<plugin key="ICMP" name="Pinger (ICMP)" author="dnpwwo" version="3.0.5">
     <description>
 ICMP Pinger Plugin.<br/><br/>
 Specify comma delimted addresses (IP or DNS names) of devices that are to be pinged.<br/>
@@ -78,7 +78,7 @@ class IcmpDevice:
 class BasePlugin:
     icmpConn = None
     icmpList = []
-    nextDev = 1
+    nextDev = 0
  
     def onStart(self):
         if Parameters["Mode6"] != "Normal":
@@ -145,7 +145,7 @@ class BasePlugin:
         # No response to previous heartbeat so mark as Off
         if (self.icmpConn != None):
             for Device in Devices:
-                if (Devices[Device].Options["Name"] == self.icmpConn.Name):
+                if (("Name" in Devices[Device].Options) and (Devices[Device].Options["Name"] == self.icmpConn.Name)):
                     Domoticz.Log("Device: '"+Devices[Device].Options["Name"]+"' address '"+self.icmpConn.Address+"' - No response.")
                     TimedOut = 0
                     if Parameters["Mode5"] == "True": TimedOut = 1

@@ -43,3 +43,4 @@ To update:
 | Version | Information|
 | ----- | ---------- |
 | 3.0.0 | Initial upload version |
+| 3.0.5 | Bug fix: KeyError in onHeartbeat |
