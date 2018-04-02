@@ -3,7 +3,7 @@
 #           Author:     Dnpwwo, 2017 - 2018
 #
 """
-<plugin key="ICMP" name="Pinger (ICMP)" author="dnpwwo" version="3.0.5">
+<plugin key="ICMP" name="Pinger (ICMP)" author="dnpwwo" version="3.1.1">
     <description>
 ICMP Pinger Plugin.<br/><br/>
 Specify comma delimted addresses (IP or DNS names) of devices that are to be pinged.<br/>
@@ -33,11 +33,16 @@ When remote devices are found a matching Domoticz device is created in the Devic
                 <option label="False" value="False" />
             </options>
         </param>
-        <param field="Mode6" label="Debug" width="75px">
+        <param field="Mode6" label="Debug" width="150px">
             <options>
-                <option label="Verbose" value="Verbose"/>
-                <option label="True" value="Debug"/>
-                <option label="False" value="Normal"  default="true" />
+                <option label="None" value="0"  default="true" />
+                <option label="Python Only" value="2"/>
+                <option label="Basic Debugging" value="62"/>
+                <option label="Basic+Messages" value="126"/>
+                <option label="Connections Only" value="16"/>
+                <option label="Connections+Python" value="18"/>
+                <option label="Connections+Queue" value="144"/>
+                <option label="All" value="-1"/>
             </options>
         </param>
     </params>
@@ -81,9 +86,9 @@ class BasePlugin:
     nextDev = 0
  
     def onStart(self):
-        if Parameters["Mode6"] != "Normal":
+        if Parameters["Mode6"] != "0":
             DumpConfigToLog()
-            Domoticz.Debugging(1)
+            Domoticz.Debugging(int(Parameters["Mode6"]))
         Domoticz.Heartbeat(int(Parameters["Mode1"]))
 
         # Find devices that already exist, create those that don't
@@ -113,7 +118,7 @@ class BasePlugin:
 
     def onMessage(self, Connection, Data):
         Domoticz.Debug("onMessage called for connection: '"+Connection.Name+"'")
-        if Parameters["Mode6"] == "Verbose":
+        if Parameters["Mode6"] == "1":
             DumpICMPResponseToLog(Data)
         if isinstance(Data, dict) and (Data["Status"] == 0):
             iUnit = -1
@@ -122,6 +127,7 @@ class BasePlugin:
                     Domoticz.Debug("Checking: '"+Connection.Name+"' against '"+Devices[Device].Options["Name"]+"'")
                     if (Devices[Device].Options["Name"] == Connection.Name):
                         iUnit = Device
+                        break
             if (iUnit > 0):
                 # Device found, set it to On and if elapsed time suplied update related device
                 UpdateDevice(iUnit, 1, "On", 0)
@@ -130,7 +136,7 @@ class BasePlugin:
                     UpdateDevice(relatedDevice, Data["ElapsedMs"], str(Data["ElapsedMs"]), 0)
         else:
             Domoticz.Log("Device: '"+Connection.Name+"' returned '"+Data["Description"]+"'.")
-            if Parameters["Mode6"] == "Verbose":
+            if Parameters["Mode6"] == "1":
                 DumpICMPResponseToLog(Data)
             TimedOut = 0
             if Parameters["Mode5"] == "True": TimedOut = 1

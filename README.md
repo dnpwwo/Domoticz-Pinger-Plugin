@@ -44,3 +44,4 @@ To update:
 | ----- | ---------- |
 | 3.0.0 | Initial upload version |
 | 3.0.5 | Bug fix: KeyError in onHeartbeat |
+| 3.1.1 | Uplift debugging |
