@@ -3,7 +3,7 @@
 #           Author:     Dnpwwo, 2017 - 2018
 #
 """
-<plugin key="ICMP" name="Pinger (ICMP)" author="dnpwwo" version="3.1.1">
+<plugin key="ICMP" name="Pinger (ICMP)" author="dnpwwo" version="3.1.3">
     <description>
 ICMP Pinger Plugin.<br/><br/>
 Specify comma delimted addresses (IP or DNS names) of devices that are to be pinged.<br/>
@@ -78,6 +78,7 @@ class IcmpDevice:
             self.icmpConn.Send("Domoticz")
     
     def Close(self):
+        self.icmpConn.Disconnect()
         self.icmpConn = None
     
 class BasePlugin:
@@ -118,7 +119,7 @@ class BasePlugin:
 
     def onMessage(self, Connection, Data):
         Domoticz.Debug("onMessage called for connection: '"+Connection.Name+"'")
-        if Parameters["Mode6"] == "1":
+        if Parameters["Mode6"] != "0":
             DumpICMPResponseToLog(Data)
         if isinstance(Data, dict) and (Data["Status"] == 0):
             iUnit = -1
@@ -143,7 +144,7 @@ class BasePlugin:
             for Device in Devices:
                 if (("Name" in Devices[Device].Options) and (Devices[Device].Options["Name"] == Connection.Name)):
                     UpdateDevice(Device, 0, "Off", TimedOut)
-        self.icmpConn = None
+        self.icmpConn.Close()
 
     def onHeartbeat(self):
         Domoticz.Debug("Heartbeating...")
@@ -157,7 +158,7 @@ class BasePlugin:
                     if Parameters["Mode5"] == "True": TimedOut = 1
                     UpdateDevice(Device, 0, "Off", TimedOut)
                     break
-            self.icmpConn = None
+            self.icmpConn.Close()
     
         Domoticz.Debug("Heartbeating '"+self.icmpList[self.nextDev]+"'")
         self.icmpConn = IcmpDevice(self.icmpList[self.nextDev])
