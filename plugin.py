@@ -145,6 +145,7 @@ class BasePlugin:
                 if (("Name" in Devices[Device].Options) and (Devices[Device].Options["Name"] == Connection.Name)):
                     UpdateDevice(Device, 0, "Off", TimedOut)
         self.icmpConn.Close()
+        self.icmpConn = None
 
     def onHeartbeat(self):
         Domoticz.Debug("Heartbeating...")
@@ -159,6 +160,7 @@ class BasePlugin:
                     UpdateDevice(Device, 0, "Off", TimedOut)
                     break
             self.icmpConn.Close()
+            self.icmpConn = None
     
         Domoticz.Debug("Heartbeating '"+self.icmpList[self.nextDev]+"'")
         self.icmpConn = IcmpDevice(self.icmpList[self.nextDev])
